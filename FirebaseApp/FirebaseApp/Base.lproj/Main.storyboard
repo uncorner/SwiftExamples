@@ -84,7 +84,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.41015721207866751" green="1" blue="0.64622413547961743" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.68487671309404441" green="0.86533203275116943" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="uM4-8c-mL8" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="0zr-gl-gSU"/>
                             <constraint firstItem="uM4-8c-mL8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="IFi-yp-QoO"/>
@@ -112,8 +112,30 @@
                     <view key="view" contentMode="scaleToFill" id="sPf-TD-RB8">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Qzb-D4-vca">
+                                <rect key="frame" x="0.0" y="56" width="414" height="752"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="taskCell" id="BDN-NT-87Q">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BDN-NT-87Q" id="hez-hm-NIP">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="1X2-lS-ZwR"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.42492813959636366" green="0.63793778246923649" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Qzb-D4-vca" firstAttribute="leading" secondItem="1X2-lS-ZwR" secondAttribute="leading" id="JKG-bS-iWQ"/>
+                            <constraint firstItem="Qzb-D4-vca" firstAttribute="top" secondItem="1X2-lS-ZwR" secondAttribute="top" id="Wfb-Da-Hxt"/>
+                            <constraint firstItem="1X2-lS-ZwR" firstAttribute="bottom" secondItem="Qzb-D4-vca" secondAttribute="bottom" id="mNo-2W-PBe"/>
+                            <constraint firstItem="1X2-lS-ZwR" firstAttribute="trailing" secondItem="Qzb-D4-vca" secondAttribute="trailing" id="p6x-31-XGa"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Tasks" id="KNj-ZJ-q78">
                         <barButtonItem key="leftBarButtonItem" title="Sign Out" id="7LS-gr-Tqv">
@@ -121,7 +143,11 @@
                                 <action selector="signOutTapped:" destination="oaY-VU-weP" id="FBX-k5-pYE"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="7mo-aU-2Ex"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="taskTableView" destination="Qzb-D4-vca" id="pI0-Jy-hej"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GoV-MO-5JQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
