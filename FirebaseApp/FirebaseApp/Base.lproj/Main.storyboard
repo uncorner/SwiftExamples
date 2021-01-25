@@ -143,7 +143,11 @@
                                 <action selector="signOutTapped:" destination="oaY-VU-weP" id="FBX-k5-pYE"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="7mo-aU-2Ex"/>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="7mo-aU-2Ex">
+                            <connections>
+                                <action selector="addTaskTapped:" destination="oaY-VU-weP" id="PZg-Gj-I6e"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="taskTableView" destination="Qzb-D4-vca" id="pI0-Jy-hej"/>
