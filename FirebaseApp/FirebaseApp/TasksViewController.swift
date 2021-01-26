@@ -10,7 +10,10 @@ import Firebase
 
 class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    
+
+    var user: User!
+    var ref: DatabaseReference!
+    var tasks = [Task]()
 
     @IBOutlet weak var taskTableView: UITableView!
     
@@ -21,6 +24,9 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
         taskTableView.dataSource = self
         taskTableView.backgroundColor = UIColor.clear
         
+        guard let currentUser = Auth.auth().currentUser else {return}
+        self.user = User(user: currentUser)
+        self.ref = Database.database().reference(withPath: "users").child(String(user.uid)).child("tasks")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -47,16 +53,19 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
         dismiss(animated: true, completion: nil)
     }
     
-    
     @IBAction func addTaskTapped(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: "New task", message: "Add new task", preferredStyle: .alert)
         
         alertController.addTextField()
         
-        let save = UIAlertAction(title: "Save", style: .default) { (action) in
+        let save = UIAlertAction(title: "Save", style: .default) { [weak self] (action) in
             guard let textField = alertController.textFields?.first, textField.text != "" else {return}
             
-            //>>>>>
+            let task = Task(title: textField.text!, userId: (self?.user.uid)!)
+            
+            let taskRef = self?.ref.child(task.title.lowercased())
+            taskRef?.setValue(task.convertToDictionary())
+            
         }
         
         let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
