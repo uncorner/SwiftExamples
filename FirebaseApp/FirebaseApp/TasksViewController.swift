@@ -58,13 +58,42 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath)
         
-        cell.textLabel?.text = self.tasks[indexPath.row].title
+        let task = self.tasks[indexPath.row]
+        cell.textLabel?.text = task.title
         cell.textLabel?.textColor = UIColor.red
         cell.backgroundColor = UIColor.clear
-        return cell
         
+        toggleCompleteon(cell: cell, isCompleted: task.completed)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        true
     }
 
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            let task = tasks[indexPath.row]
+            task.ref?.removeValue()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = taskTableView.cellForRow(at: indexPath) else {return}
+        
+        let task = tasks[indexPath.row]
+        let isCompleted = !task.completed
+        
+        toggleCompleteon(cell: cell, isCompleted: isCompleted)
+        task.ref?.updateChildValues(["completed": isCompleted])
+        
+    }
+    
+    private func toggleCompleteon(cell: UITableViewCell, isCompleted: Bool) {
+        cell.accessoryType = isCompleted ? .checkmark : .none
+    }
+    
     @IBAction func signOutTapped(_ sender: UIBarButtonItem) {
         do {
             try Auth.auth().signOut()
