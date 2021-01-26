@@ -17,6 +17,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var messageLabel: UILabel!
     
     let showTasksSegue = "showTasksSegue"
+    var ref: DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,11 +27,14 @@ class LoginViewController: UIViewController {
         
         messageLabel.alpha = 0
         
+        self.ref = Database.database().reference(withPath: "users")
         Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
             if user != nil {
                 self?.performSegue(withIdentifier: (self?.showTasksSegue)!, sender: nil)
             }
         }
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,16 +96,15 @@ class LoginViewController: UIViewController {
         }
         
         Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
-            if error != nil {
-                print(error?.localizedDescription ?? "")
+            guard error == nil, authResult?.user != nil else {
+                print(error?.localizedDescription)
                 return
             }
-            if authResult?.user == nil {
-                print("User is not created")
-            }
+            
+            let userRef = self.ref.child((authResult?.user.uid)!)
+            userRef.setValue(["email": authResult?.user.email])
         }
     }
-    
-   
 
+    
 }
