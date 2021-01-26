@@ -12,6 +12,7 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
 
     var user: User!
+    // ref of tasks
     var ref: DatabaseReference!
     var tasks = [Task]()
 
@@ -29,14 +30,35 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.ref = Database.database().reference(withPath: "users").child(String(user.uid)).child("tasks")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        ref.observe(.value) { [weak self] (snapshot) in
+            var _tasks = [Task]()
+            for item in snapshot.children {
+                let task = Task(snapshot: item as! DataSnapshot)
+                _tasks.append(task)
+            }
+            
+            self?.tasks = _tasks
+            self?.taskTableView.reloadData()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.ref.removeAllObservers()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
+        tasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath)
         
-        cell.textLabel?.text = "Some task"
+        cell.textLabel?.text = self.tasks[indexPath.row].title
         cell.textLabel?.textColor = UIColor.red
         cell.backgroundColor = UIColor.clear
         return cell
