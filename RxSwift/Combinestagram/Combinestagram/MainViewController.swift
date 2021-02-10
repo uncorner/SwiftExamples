@@ -95,7 +95,6 @@ class MainViewController: UIViewController {
 
   @IBAction func actionAdd() {
     print(#function)
-    
 //    let newImages = images.value
 //      + [UIImage(named: "IMG_1907.jpg")!]
 //    images.accept(newImages)
@@ -106,6 +105,10 @@ class MainViewController: UIViewController {
       .share()
     
     newPhotos
+      .takeWhile { [weak self] image in
+        let count = self?.images.value.count ?? 0
+        return count < 6
+      }
       .filter { newImage in
         return newImage.size.width > newImage.size.height
       }
