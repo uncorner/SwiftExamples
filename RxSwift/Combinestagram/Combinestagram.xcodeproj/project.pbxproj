@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3C798DF44291743D08F740BD /* Pods_Combinestagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F67149AC38D099DF34F2B67 /* Pods_Combinestagram.framework */; };
+		92C67A1B25D44F14006936CF /* PHPhotoLibrary+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C67A1A25D44F14006936CF /* PHPhotoLibrary+Rx.swift */; };
+		92C67A1E25D46CE7006936CF /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C67A1D25D46CE7006936CF /* UIViewController+Rx.swift */; };
 		9CDD7B041DE5AABE0058B2D5 /* UIImage+Collage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDD7B031DE5AABE0058B2D5 /* UIImage+Collage.swift */; };
 		9CDD7B061DE5BC660058B2D5 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDD7B051DE5BC660058B2D5 /* PhotosViewController.swift */; };
 		9CDD7B081DE6D7ED0058B2D5 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDD7B071DE6D7ED0058B2D5 /* PhotoCell.swift */; };
@@ -24,6 +26,8 @@
 		138B0DD8C19D2249FDA6B3D7 /* Pods-Combinestagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Combinestagram.debug.xcconfig"; path = "Target Support Files/Pods-Combinestagram/Pods-Combinestagram.debug.xcconfig"; sourceTree = "<group>"; };
 		4F67149AC38D099DF34F2B67 /* Pods_Combinestagram.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Combinestagram.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B274EE506A9203BE4BCCC98 /* Pods-Combinestagram.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Combinestagram.release.xcconfig"; path = "Target Support Files/Pods-Combinestagram/Pods-Combinestagram.release.xcconfig"; sourceTree = "<group>"; };
+		92C67A1A25D44F14006936CF /* PHPhotoLibrary+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHPhotoLibrary+Rx.swift"; sourceTree = "<group>"; };
+		92C67A1D25D46CE7006936CF /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		9CDD7B031DE5AABE0058B2D5 /* UIImage+Collage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "UIImage+Collage.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9CDD7B051DE5BC660058B2D5 /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PhotosViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9CDD7B071DE6D7ED0058B2D5 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PhotoCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -84,6 +88,7 @@
 				9CDD7B031DE5AABE0058B2D5 /* UIImage+Collage.swift */,
 				9CE7E5DC1DE5A40900C8BA5A /* AppDelegate.swift */,
 				9CDD7B0B1DE6E3D30058B2D5 /* PhotoWriter.swift */,
+				92C67A1A25D44F14006936CF /* PHPhotoLibrary+Rx.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -117,6 +122,7 @@
 				9CE7E5DE1DE5A40A00C8BA5A /* MainViewController.swift */,
 				9CDD7B051DE5BC660058B2D5 /* PhotosViewController.swift */,
 				9CDD7B071DE6D7ED0058B2D5 /* PhotoCell.swift */,
+				92C67A1D25D46CE7006936CF /* UIViewController+Rx.swift */,
 			);
 			path = Combinestagram;
 			sourceTree = "<group>";
@@ -243,8 +249,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92C67A1E25D46CE7006936CF /* UIViewController+Rx.swift in Sources */,
 				9CDD7B041DE5AABE0058B2D5 /* UIImage+Collage.swift in Sources */,
 				9CDD7B081DE6D7ED0058B2D5 /* PhotoCell.swift in Sources */,
+				92C67A1B25D44F14006936CF /* PHPhotoLibrary+Rx.swift in Sources */,
 				9CDD7B061DE5BC660058B2D5 /* PhotosViewController.swift in Sources */,
 				9CDD7B0C1DE6E3D30058B2D5 /* PhotoWriter.swift in Sources */,
 				9CE7E5DF1DE5A40A00C8BA5A /* MainViewController.swift in Sources */,

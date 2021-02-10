@@ -47,6 +47,8 @@ class PhotosViewController: UICollectionViewController {
   
   private lazy var photos = PhotosViewController.loadPhotos()
   private lazy var imageManager = PHCachingImageManager()
+  
+  private let bag = DisposeBag()
 
   private lazy var thumbnailSize: CGSize = {
     let cellSize = (self.collectionViewLayout as! UICollectionViewFlowLayout).itemSize
@@ -63,7 +65,33 @@ class PhotosViewController: UICollectionViewController {
   // MARK: View Controller
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    
+    let authorized = PHPhotoLibrary.authorized
+      .share()
+    
+    authorized
+      // pass only the true value
+      .skipWhile { !$0 }
+      .take(1)
+      .subscribe(onNext: { [weak self] _ in
+        self?.photos = PhotosViewController.loadPhotos()
+        DispatchQueue.main.async {
+          self?.collectionView?.reloadData()
+        }
+      })
+      .disposed(by: bag)
+    
+    //So, keeping skip, takeLast, and filter might be the best way to ensure that the app logic isn’t
+    //going to break after the next iOS version is released.
+    authorized
+      .skip(1)
+      .takeLast(1)
+      .filter { !$0 }
+      .subscribe(onNext: { [weak self] _ in
+        guard let errorMessage = self?.errorMessage else { return }
+        DispatchQueue.main.async(execute: errorMessage)
+      })
+      .disposed(by: bag)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -72,6 +100,15 @@ class PhotosViewController: UICollectionViewController {
     self.selectedPhotosSubject.onCompleted()
   }
 
+  private func errorMessage() {
+    alert(title: "No access to Camera Roll", text: "You can grant access to Combinestagram from the Settings app")
+      .subscribe(onCompleted: { [weak self] in
+        self?.dismiss(animated: true, completion: nil)
+        _ = self?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: bag)
+  }
+  
   // MARK: UICollectionView
 
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
