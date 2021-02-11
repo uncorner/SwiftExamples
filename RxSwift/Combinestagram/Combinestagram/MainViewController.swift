@@ -50,7 +50,8 @@ class MainViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    images
+    let shareImages = images.share()
+    shareImages
       .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
       .subscribe(onNext: { [weak imagePreview] photos in
       guard let preview = imagePreview else {return}
@@ -59,7 +60,7 @@ class MainViewController: UIViewController {
     })
     .disposed(by: bag)
     
-    images.subscribe(onNext: { [weak self] photos in
+    shareImages.subscribe(onNext: { [weak self] photos in
       self?.updateUI(photos: photos)
     })
     .disposed(by: bag)
@@ -76,6 +77,9 @@ class MainViewController: UIViewController {
   @IBAction func actionClear() {
     images.accept([])
     imageCache = []
+
+    // clear top left collage preview
+    navigationItem.leftBarButtonItem = UIBarButtonItem(image: nil, style: .done, target: nil, action: nil)
   }
 
   @IBAction func actionSave() {
@@ -97,9 +101,6 @@ class MainViewController: UIViewController {
 
   @IBAction func actionAdd() {
     print(#function)
-//    let newImages = images.value
-//      + [UIImage(named: "IMG_1907.jpg")!]
-//    images.accept(newImages)
     
     let photosViewController = storyboard!.instantiateViewController(withIdentifier: "PhotosViewController") as! PhotosViewController
     
