@@ -50,7 +50,9 @@ class MainViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    images.subscribe(onNext: { [weak imagePreview] photos in
+    images
+      .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+      .subscribe(onNext: { [weak imagePreview] photos in
       guard let preview = imagePreview else {return}
       
       preview.image = photos.collage(size: preview.frame.size)
