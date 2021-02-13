@@ -40,6 +40,8 @@ class ActivityController: UITableViewController {
 
   private let events = BehaviorRelay<[Event]>(value: [])
   private let bag = DisposeBag()
+  
+  private let eventsFileURL = cachedFileURL("events.json")
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -53,6 +55,11 @@ class ActivityController: UITableViewController {
     refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
     refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 
+    let decoder = JSONDecoder()
+    if let eventsData = try? Data(contentsOf: eventsFileURL), let persistedEvents = try? decoder.decode([Event].self, from: eventsData) {
+      events.accept(persistedEvents)
+    }
+    
     refresh()
   }
 
@@ -102,6 +109,18 @@ class ActivityController: UITableViewController {
       self.tableView.reloadData()
       self.refreshControl?.endRefreshing()
     }
+    
+    let encoder = JSONEncoder()
+    if let eventsData = try? encoder.encode(updatedEvents) {
+      try? eventsData.write(to: eventsFileURL, options: .atomicWrite)
+    }
+  }
+  
+  static func cachedFileURL(_ fileName: String) -> URL {
+    return FileManager.default
+      .urls(for: .cachesDirectory, in: .allDomainsMask)
+      .first!
+      .appendingPathComponent(fileName)
   }
 
   // MARK: - Table Data Source
