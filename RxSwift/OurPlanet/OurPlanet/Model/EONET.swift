@@ -113,7 +113,6 @@ class EONET {
     let closedEvents = events(forLast: days, closed: true)
     
     //return openEvents.concat(closedEvents)
-
     // parallel fetching
     return Observable.of(openEvents, closedEvents)
       .merge()
