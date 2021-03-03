@@ -40,10 +40,38 @@ class ViewController: UIViewController {
   @IBOutlet private var humidityLabel: UILabel!
   @IBOutlet private var iconLabel: UILabel!
   @IBOutlet private var cityNameLabel: UILabel!
+    
+  private let bag = DisposeBag()
 
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
+    
+    ApiController.shared.currentWeather(for: "RxSwift")
+        .observeOn(MainScheduler.instance)
+        .subscribe(onNext: { data in
+            self.tempLabel.text = "\(data.temperature)° C"
+            self.iconLabel.text = data.icon
+            self.humidityLabel.text = "\(data.humidity)%"
+            self.cityNameLabel.text = data.cityName
+        })
+        .disposed(by: bag)
+    
+    searchCityName.rx.text.orEmpty
+        .filter { !$0.isEmpty }
+        .flatMap { text in
+            ApiController.shared
+                .currentWeather(for: text)
+                .catchErrorJustReturn(.empty)
+        }
+        .observeOn(MainScheduler.instance)
+        .subscribe(onNext: { data in
+            self.tempLabel.text = "\(data.temperature)° C"
+            self.iconLabel.text = data.icon
+            self.humidityLabel.text = "\(data.humidity)%"
+            self.cityNameLabel.text = data.cityName
+        })
+        .disposed(by: bag)
 
     style()
   }
