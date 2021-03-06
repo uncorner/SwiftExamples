@@ -35,27 +35,29 @@ import RxSwift
 import RxCocoa
 
 class ViewController: UIViewController {
-  @IBOutlet private var searchCityName: UITextField!
-  @IBOutlet private var tempLabel: UILabel!
-  @IBOutlet private var humidityLabel: UILabel!
-  @IBOutlet private var iconLabel: UILabel!
-  @IBOutlet private var cityNameLabel: UILabel!
+    @IBOutlet private var searchCityName: UITextField!
+    @IBOutlet private var tempLabel: UILabel!
+    @IBOutlet private var humidityLabel: UILabel!
+    @IBOutlet private var iconLabel: UILabel!
+    @IBOutlet private var cityNameLabel: UILabel!
     
-  private let bag = DisposeBag()
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    private let bag = DisposeBag()
 
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
     
-    ApiController.shared.currentWeather(for: "RxSwift")
-        .observeOn(MainScheduler.instance)
-        .subscribe(onNext: { data in
-            self.tempLabel.text = "\(data.temperature)° C"
-            self.iconLabel.text = data.icon
-            self.humidityLabel.text = "\(data.humidity)%"
-            self.cityNameLabel.text = data.cityName
-        })
-        .disposed(by: bag)
+//    ApiController.shared.currentWeather(for: "RxSwift")
+//        .observeOn(MainScheduler.instance)
+//        .subscribe(onNext: { data in
+//            self.tempLabel.text = "\(data.temperature)° C"
+//            self.iconLabel.text = data.icon
+//            self.humidityLabel.text = "\(data.humidity)%"
+//            self.cityNameLabel.text = data.cityName
+//        })
+//        .disposed(by: bag)
     
 //    let search = searchCityName.rx.text.orEmpty
 //        .filter { !$0.isEmpty }
@@ -67,10 +69,24 @@ class ViewController: UIViewController {
 //        .share(replay: 1)
 //        .observeOn(MainScheduler.instance)
     
-    let search = searchCityName.rx
+    
+    let searchInput = searchCityName.rx
         .controlEvent(.editingDidEndOnExit)
         .map { self.searchCityName.text ?? "" }
         .filter { !$0.isEmpty }
+    
+//    let search = searchCityName.rx
+//        .controlEvent(.editingDidEndOnExit)
+//        .map { self.searchCityName.text ?? "" }
+//        .filter { !$0.isEmpty }
+//        .flatMapLatest { text in
+//            ApiController.shared
+//                .currentWeather(for: text)
+//                .catchErrorJustReturn(.empty)
+//        }
+//        .asDriver(onErrorJustReturn: .empty)
+    
+    let search = searchInput
         .flatMapLatest { text in
             ApiController.shared
                 .currentWeather(for: text)
@@ -78,21 +94,45 @@ class ViewController: UIViewController {
         }
         .asDriver(onErrorJustReturn: .empty)
     
+    let running = Observable.merge(
+        searchInput.map { _ in true },
+        search.map { _ in false }.asObservable()
+    )
+    .startWith(true)
+    .asDriver(onErrorJustReturn: false)
+    
+    running
+        .skip(1)
+        .drive(activityIndicator.rx.isAnimating)
+        .disposed(by: bag)
+    running
+      .drive(tempLabel.rx.isHidden)
+      .disposed(by: bag)
+    running
+      .drive(iconLabel.rx.isHidden)
+      .disposed(by: bag)
+    running
+      .drive(humidityLabel.rx.isHidden)
+      .disposed(by: bag)
+    running
+      .drive(cityNameLabel.rx.isHidden)
+      .disposed(by: bag)
+    
     search.map { "\($0.temperature)° C" }
         //.bind(to: tempLabel.rx.text)
         .drive(tempLabel.rx.text)
         .disposed(by: bag)
-    
+
     search.map(\.icon)
         //.bind(to: iconLabel.rx.text)
         .drive(iconLabel.rx.text)
         .disposed(by: bag)
-    
+
     search.map { "\($0.humidity)%" }
         //.bind(to: humidityLabel.rx.text)
         .drive(humidityLabel.rx.text)
         .disposed(by: bag)
-    
+
     search.map(\.cityName)
         //.bind(to: cityNameLabel.rx.text)
         .drive(cityNameLabel.rx.text)
