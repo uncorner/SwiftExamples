@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Product {
+struct Product: Decodable {
     var name: String
     var src: String
     

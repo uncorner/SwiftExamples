@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DetailedData {
+struct DetailedData: Decodable {
     var description: String
     var price: Decimal
     

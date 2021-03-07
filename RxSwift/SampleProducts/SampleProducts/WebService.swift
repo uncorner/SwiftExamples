@@ -11,7 +11,7 @@ import RxCocoa
 
 class WebService {
     
-    static func request<T: Decodable>(endpoint: String) -> Observable<T> {
+    static private func request<T: Decodable>(endpoint: String) -> Observable<[T]> {
         
         do {
             guard let url = URL(string: endpoint) else {
@@ -22,12 +22,16 @@ class WebService {
             let decoder = JSONDecoder()
             
             return URLSession.shared.rx.response(request: request)
-                .map { (result: (response: HTTPURLResponse, data: Data)) -> T in
-                    return try decoder.decode(T.self, from: result.data)
+                .map { (result: (response: HTTPURLResponse, data: Data)) -> [T] in
+                    return try decoder.decode([T].self, from: result.data)
                 }
         } catch {
             return Observable.empty()
         }
+    }
+    
+    static func products() -> Observable<[Product]> {
+        return request(endpoint: "https://raw.githubusercontent.com/poetofcode/RxProducts/master/products/products.json")
     }
     
     

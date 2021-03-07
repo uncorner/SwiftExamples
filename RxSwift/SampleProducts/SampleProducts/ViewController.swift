@@ -12,6 +12,18 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        _ = WebService.products().subscribe { (products) in
+            for p in products {
+                print("\(p.name)")
+            }
+            
+        } onError: { (error) in
+            print(error.localizedDescription)
+        }
+
+        
+        
     }
 
 
