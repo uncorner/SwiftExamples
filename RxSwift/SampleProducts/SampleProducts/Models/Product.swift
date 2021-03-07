@@ -11,5 +11,10 @@ struct Product: Decodable {
     var name: String
     var src: String
     
+    var detailedData: DetailedData?
     
+    private enum DecodingKeys: String, CodingKey {
+        case name
+        case src
+    }
 }
