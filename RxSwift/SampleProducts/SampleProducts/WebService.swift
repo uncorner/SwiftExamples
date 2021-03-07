@@ -19,12 +19,11 @@ class WebService {
             }
             
             let request = URLRequest(url: url)
+            let decoder = JSONDecoder()
             
             return URLSession.shared.rx.response(request: request)
                 .map { (result: (response: HTTPURLResponse, data: Data)) -> T in
-                    let decoder = self.jsonDecoder(contentIdentifier: contentIdentifier)
-                    let envelope = try decoder.decode(EOEnvelope<T>.self, from: result.data)
-                    return envelope.content
+                    return try decoder.decode(T.self, from: result.data)
                 }
         } catch {
             return Observable.empty()
