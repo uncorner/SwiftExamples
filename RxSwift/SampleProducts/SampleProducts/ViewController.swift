@@ -23,21 +23,36 @@ class ViewController: UIViewController {
             .share()
         
         let details = products
-            .flatMap { (product) -> Observable<DetailedData> in
+            .flatMap { (product) -> Observable<(Product, DetailedData)> in
                 let detailed = WebService.detailedDataObservable(endpoint: product.src)
-                return detailed
+                let pObs = Observable.just(product)
+                return Observable.zip(pObs, detailed)
             }
-        
-        Observable.zip(products, details)
-            .reduce([]) { (acc, currentItem) -> [(Product, DetailedData)] in
-                var copyAcc: [(Product, DetailedData)] = acc
-                copyAcc.append(currentItem)
+            
+        details
+            .reduce([]) { (acc, currentItem) -> [Product] in
+                var copyAcc: [Product] = acc
+                var product = currentItem.0
+                product.detailedData = currentItem.1
+                copyAcc.append(product)
+                
                 return copyAcc
             }
-            .subscribe { (combinedItems) in
-                for item in combinedItems {
-                    print("\(item.0.name) | \(item.1.description) | \(item.1.price)")
+        
+//        details
+//            .reduce([]) { (acc, currentItem) -> [(Product, DetailedData)] in
+//                var copyAcc: [(Product, DetailedData)] = acc
+//                copyAcc.append(currentItem)
+//                return copyAcc
+//            }
+            .subscribe { (products) in
+                for product in products {
+                    print("\(product.name) | \(product.detailedData?.description ?? "") | \(product.detailedData?.price ?? 0) ")
                 }
+                
+//                for item in combinedItems {
+//                    print("\(item.0.name) | \(item.1.description) | \(item.1.price)")
+//                }
                 
             } onError: { (error) in
                 print(error.localizedDescription)
