@@ -48,8 +48,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        let products = WebService.products()
-            .flatMap({ (products) -> Observable<Product> in
+        let products = WebService.productsObservable()
+            .flatMapLatest({ (products) -> Observable<Product> in
                 return Observable.from(products)
             })
             .share()
@@ -60,7 +60,7 @@ class ViewController: UIViewController {
 //                return Observable.from(products)
 //            })
             .flatMap { (product) -> Observable<DetailedData> in
-                let detailed = WebService.detailedData(endpoint: product.src)
+                let detailed = WebService.detailedDataObservable(endpoint: product.src)
                 return detailed
             }
         
@@ -72,7 +72,7 @@ class ViewController: UIViewController {
             }
             .subscribe { (items) in
                 for item in items {
-                    print("\(item.0.name) | \(item.1.price)")
+                    print("\(item.0.name) | \(item.1.description) | \(item.1.price)")
                 }
 
             } onError: { (error) in

@@ -30,11 +30,11 @@ class WebService {
         }
     }
     
-    static func products() -> Observable<[Product]> {
+    static func productsObservable() -> Observable<[Product]> {
         return request(endpoint: "https://raw.githubusercontent.com/poetofcode/RxProducts/master/products/products.json")
     }
     
-    static func detailedData(endpoint: String) -> Observable<DetailedData> {
+    static func detailedDataObservable(endpoint: String) -> Observable<DetailedData> {
         return request(endpoint: endpoint)
     }
     
