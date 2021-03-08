@@ -9,6 +9,8 @@ import UIKit
 import RxSwift
 
 class ViewController: UIViewController {
+    
+    var disposeBag = DisposeBag()
 
 //    func startDownload() {
 //       let eoCategories = EONET.categories
@@ -46,29 +48,37 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        var products = WebService.products()
+        let products = WebService.products()
             .flatMap({ (products) -> Observable<Product> in
                 return Observable.from(products)
             })
             .share()
         
-        var details = products
+        let details = products
 //            WebService.products()
 //            .flatMap({ (products) -> Observable<Product> in
 //                return Observable.from(products)
 //            })
             .flatMap { (product) -> Observable<DetailedData> in
-                var detailed = WebService.detailedData(endpoint: product.src)
+                let detailed = WebService.detailedData(endpoint: product.src)
                 return detailed
             }
         
-        var result = Observable.zip(products, details)
-            .subscribe { (item) in
-                print("\(item.0.name) | \(item.1.price)")
-                
+        Observable.zip(products, details)
+            .reduce([]) { (acc, currentItem) -> [(Product, DetailedData)] in
+                var copyAcc: [(Product, DetailedData)] = acc
+                copyAcc.append(currentItem)
+                return copyAcc
+            }
+            .subscribe { (items) in
+                for item in items {
+                    print("\(item.0.name) | \(item.1.price)")
+                }
+
             } onError: { (error) in
                 print(error.localizedDescription)
             }
+            .disposed(by: disposeBag)
             
             
 //            .flatMap({ (products:[Product]) -> Observable<[Product]> in
