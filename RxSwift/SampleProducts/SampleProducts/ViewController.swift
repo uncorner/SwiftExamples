@@ -46,21 +46,42 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        _ = WebService.products()
-            .flatMap({ (products:[Product]) -> Observable<[Product]> in
-                return Observable.just(products)
+        var products = WebService.products()
+            .flatMap({ (products) -> Observable<Product> in
+                return Observable.from(products)
             })
-            .subscribe { (products) in
-            for p in products {
-                print("\(p.name); \(p.src)")
+            .share()
+        
+        var details = products
+//            WebService.products()
+//            .flatMap({ (products) -> Observable<Product> in
+//                return Observable.from(products)
+//            })
+            .flatMap { (product) -> Observable<DetailedData> in
+                var detailed = WebService.detailedData(endpoint: product.src)
+                return detailed
+            }
+        
+        var result = Observable.zip(products, details)
+            .subscribe { (item) in
+                print("\(item.0.name) | \(item.1.price)")
+                
+            } onError: { (error) in
+                print(error.localizedDescription)
             }
             
-        } onError: { (error) in
-            print(error.localizedDescription)
-        }
-
-        
-        
+            
+//            .flatMap({ (products:[Product]) -> Observable<[Product]> in
+//                return Observable.just(products)
+//            })
+//            .subscribe { (products) in
+//            for p in products {
+//                print("\(p.name); \(p.src)")
+//            }
+            
+//        } onError: { (error) in
+//            print(error.localizedDescription)
+//        }
     }
 
 
