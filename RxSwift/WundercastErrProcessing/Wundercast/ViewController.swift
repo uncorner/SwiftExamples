@@ -90,6 +90,7 @@ class ViewController: UIViewController {
         .catchErrorJustReturn(.empty)
     }
 
+    let maxAttempts = 4
     let searchInput = searchCityName.rx.controlEvent(.editingDidEndOnExit)
       .map { [weak self] _ in self?.searchCityName.text ?? "" }
       .filter { !$0.isEmpty }
@@ -99,9 +100,20 @@ class ViewController: UIViewController {
             .do(onNext: { [weak self] data in
                 self?.cache[text] = data
             })
+            //>>>>>>
+            .retryWhen { e in
+                return e.enumerated().flatMap { attempt, error -> Observable<Int> in
+                    if attempt >= maxAttempts - 1 {
+                        return Observable.error(error)
+                    }
+                    print("== retrying after \(attempt + 1) seconds ==")
+                    return Observable<Int>.timer(.seconds(attempt + 1), scheduler: MainScheduler.instance)
+                }
+            }
             .catchError { error in
                 return Observable.just(self.cache[text] ?? .empty)
             }
+        
     }
 
     let search = Observable.merge(geoSearch, textSearch)
