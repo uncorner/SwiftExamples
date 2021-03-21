@@ -90,7 +90,22 @@ class ViewController: UIViewController {
         .catchErrorJustReturn(.empty)
     }
 
-    //let maxAttempts = 4
+    let maxAttempts = 4
+    let retryHandler: (Observable<Error>) -> Observable<Int> = { e in
+        return e.enumerated().flatMap { attempt, error -> Observable<Int> in
+            if attempt >= maxAttempts - 1 {
+                return Observable.error(error)
+            } else if let casted = error as? ApiController.ApiError, casted == .invalidKey {
+                return ApiController.shared.apiKey
+                    .filter { !$0.isEmpty }
+                    .map { _ in 1 }
+            }
+            print("== retrying after \(attempt + 1) seconds ==")
+            return Observable<Int>.timer(.seconds(attempt + 1), scheduler: MainScheduler.instance)
+                .take(1)
+        }
+    }
+        
     let searchInput = searchCityName.rx.controlEvent(.editingDidEndOnExit)
       .map { [weak self] _ in self?.searchCityName.text ?? "" }
       .filter { !$0.isEmpty }
@@ -106,16 +121,8 @@ class ViewController: UIViewController {
                     self.showError(error: error)
                 }}
             )
-            //>>>>>>
-//            .retryWhen { e in
-//                return e.enumerated().flatMap { attempt, error -> Observable<Int> in
-//                    if attempt >= maxAttempts - 1 {
-//                        return Observable.error(error)
-//                    }
-//                    print("== retrying after \(attempt + 1) seconds ==")
-//                    return Observable<Int>.timer(.seconds(attempt + 1), scheduler: MainScheduler.instance)
-//                }
-//            }
+            //>>>
+            .retryWhen(retryHandler)
             .catchError { error in
                 return Observable.just(self.cache[text] ?? .empty)
             }
@@ -189,11 +196,14 @@ class ViewController: UIViewController {
             InfoView.showIn(viewController: self, message: "An error occurred")
             return
         }
+        
         switch e {
         case .cityNotFound:
             InfoView.showIn(viewController: self, message: "City Name is invalid")
         case .serverFailure:
             InfoView.showIn(viewController: self, message: "Server error")
+        case .invalidKey:
+            InfoView.showIn(viewController: self, message: "Key is invalid")
         }
     }
 

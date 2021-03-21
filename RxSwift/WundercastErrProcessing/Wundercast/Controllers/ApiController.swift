@@ -113,6 +113,7 @@ class ApiController {
   enum ApiError: Error {
     case cityNotFound
     case serverFailure
+    case invalidKey
   }
 
   /// The shared instance
@@ -120,7 +121,8 @@ class ApiController {
 
   /// The api key to communicate with openweathermap.org
   /// Create your own on https://home.openweathermap.org/users/sign_up
-  let apiKey = BehaviorSubject(value: "cc6653fcf174300c9c68cb0" + "922f4c44e")
+  //let apiKey = BehaviorSubject(value: "cc6653fcf174300c9c68cb0922f4c44e")
+    let apiKey = BehaviorSubject(value: "")
   
   /// API base URL
   let baseURL = URL(string: "http://api.openweathermap.org/data/2.5")!
@@ -194,6 +196,8 @@ class ApiController {
                 switch response.statusCode {
                 case 200 ..< 300:
                     return data
+                case 401:
+                    throw ApiError.invalidKey
                 case 400 ..< 500:
                     throw ApiError.cityNotFound
                 default:
