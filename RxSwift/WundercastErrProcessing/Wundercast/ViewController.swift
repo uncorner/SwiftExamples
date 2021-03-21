@@ -90,7 +90,7 @@ class ViewController: UIViewController {
         .catchErrorJustReturn(.empty)
     }
 
-    let maxAttempts = 4
+    //let maxAttempts = 4
     let searchInput = searchCityName.rx.controlEvent(.editingDidEndOnExit)
       .map { [weak self] _ in self?.searchCityName.text ?? "" }
       .filter { !$0.isEmpty }
@@ -99,17 +99,23 @@ class ViewController: UIViewController {
         return ApiController.shared.currentWeather(city: text)
             .do(onNext: { [weak self] data in
                 self?.cache[text] = data
-            })
+            },
+            onError: { error in
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.showError(error: error)
+                }}
+            )
             //>>>>>>
-            .retryWhen { e in
-                return e.enumerated().flatMap { attempt, error -> Observable<Int> in
-                    if attempt >= maxAttempts - 1 {
-                        return Observable.error(error)
-                    }
-                    print("== retrying after \(attempt + 1) seconds ==")
-                    return Observable<Int>.timer(.seconds(attempt + 1), scheduler: MainScheduler.instance)
-                }
-            }
+//            .retryWhen { e in
+//                return e.enumerated().flatMap { attempt, error -> Observable<Int> in
+//                    if attempt >= maxAttempts - 1 {
+//                        return Observable.error(error)
+//                    }
+//                    print("== retrying after \(attempt + 1) seconds ==")
+//                    return Observable<Int>.timer(.seconds(attempt + 1), scheduler: MainScheduler.instance)
+//                }
+//            }
             .catchError { error in
                 return Observable.just(self.cache[text] ?? .empty)
             }
@@ -177,6 +183,19 @@ class ViewController: UIViewController {
 
     self.present(alert, animated: true)
   }
+    
+    private func showError(error e: Error) {
+        guard let e = e as? ApiController.ApiError else {
+            InfoView.showIn(viewController: self, message: "An error occurred")
+            return
+        }
+        switch e {
+        case .cityNotFound:
+            InfoView.showIn(viewController: self, message: "City Name is invalid")
+        case .serverFailure:
+            InfoView.showIn(viewController: self, message: "Server error")
+        }
+    }
 
   // MARK: - Style
 
