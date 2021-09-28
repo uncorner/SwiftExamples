@@ -5,14 +5,14 @@ inhibit_all_warnings!
 abstract_target 'TweetieAbstract' do
     pod 'Alamofire', '4.9.1'
 
-    pod 'RxSwift', '5.1.1'
-    pod 'RxCocoa', '5.1.1'
-    pod 'RealmSwift', '5.1.0'
-    pod 'RxRealm', '3.0.0'
+    pod 'RxSwift', '5.1.3'
+    pod 'RxCocoa', '5.1.3'
+    pod 'RealmSwift', '5.5.1'
+    pod 'RxRealm', '3.1.0'
     pod 'Unbox', '4.0.0'
     pod 'Then', '2.7.0'
-    pod 'Reachability', '3.2.0'
-    pod 'RxRealmDataSources', '0.3.0'
+    pod 'Reachability', '3.2'
+    pod 'RxRealmDataSources', '0.3'
 
     target 'Tweetie' do
         platform :ios, '12.0'
