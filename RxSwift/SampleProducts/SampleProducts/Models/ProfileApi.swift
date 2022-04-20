@@ -31,19 +31,14 @@ protocol ProfileApi {
 }
 
 class GoodProfileApi: ProfileApi {
-    var files = [File]()
-    var avatars = [UUID]()
     
     func uploadFile(file: File) -> Observable<UploadResponse> {
-        //file.id = UUID()
-        files.append(file)
         print("uploadFile \(file.id), \(file.data)")
         return Observable.just(UploadResponse(fileId: file.id))
     }
     
     func saveProfile(profile: Profile) -> Single<SaveProfileResponse> {
-        avatars = profile.avatars
-        print("saveProfile \(avatars)")
+        print("saveProfile \(profile.avatars)")
         return Single.just(SaveProfileResponse())
     }
 }
@@ -58,10 +53,6 @@ class Manager {
         let file1 = File(id: UUID(), data: "File 1")
         let file2 = File(id: UUID(), data: "File 2")
         let file3 = File(id: UUID(), data: "File 3")
-        
-//        let obs1 = api.uploadFile(file: file1).map { item in
-//            Observable.just([item])
-//        }
         
         let obs1 = api.uploadFile(file: file1)
         let obs2 = api.uploadFile(file: file2)
