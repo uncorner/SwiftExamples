@@ -19,6 +19,7 @@
 		922A250A25F51D720097D177 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922A250925F51D720097D177 /* Product.swift */; };
 		922A250F25F51F8D0097D177 /* DetailedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922A250E25F51F8D0097D177 /* DetailedData.swift */; };
 		922A251425F527830097D177 /* ProductError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922A251325F527830097D177 /* ProductError.swift */; };
+		92E54738281070D4007E1600 /* ProfileApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E54737281070D4007E1600 /* ProfileApi.swift */; };
 		92ECDD5B25F4FD05009FFA6C /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92ECDD5A25F4FD05009FFA6C /* WebService.swift */; };
 		C47E2AF3974CA91DD52AD7C2 /* Pods_SampleProducts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEE12653AC6F899682A9AD5 /* Pods_SampleProducts.framework */; };
 		D518DFA7EB0922B019F42ED5 /* Pods_SampleProducts_SampleProductsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69DAC8BE76019674B264F770 /* Pods_SampleProducts_SampleProductsUITests.framework */; };
@@ -67,6 +68,7 @@
 		922A250925F51D720097D177 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		922A250E25F51F8D0097D177 /* DetailedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedData.swift; sourceTree = "<group>"; };
 		922A251325F527830097D177 /* ProductError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductError.swift; sourceTree = "<group>"; };
+		92E54737281070D4007E1600 /* ProfileApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileApi.swift; sourceTree = "<group>"; };
 		92ECDD5A25F4FD05009FFA6C /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		EFEE12653AC6F899682A9AD5 /* Pods_SampleProducts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SampleProducts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -174,6 +176,7 @@
 			children = (
 				922A250925F51D720097D177 /* Product.swift */,
 				922A250E25F51F8D0097D177 /* DetailedData.swift */,
+				92E54737281070D4007E1600 /* ProfileApi.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 				922A250A25F51D720097D177 /* Product.swift in Sources */,
 				922A250F25F51F8D0097D177 /* DetailedData.swift in Sources */,
 				92ECDD5B25F4FD05009FFA6C /* WebService.swift in Sources */,
+				92E54738281070D4007E1600 /* ProfileApi.swift in Sources */,
 				921511A625F4D41E00CD5A03 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

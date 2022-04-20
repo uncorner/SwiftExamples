@@ -14,6 +14,14 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let manager = Manager()
+        manager.run()
+    }
+    
+    /*
+    override func viewDidLoad() {
+        super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         _ = WebService.productsObservable()
@@ -49,6 +57,7 @@ class ViewController: UIViewController {
             }
             .disposed(by: disposeBag)
     }
+     */
     
     
 }
