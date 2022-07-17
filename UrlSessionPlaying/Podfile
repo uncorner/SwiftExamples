@@ -8,6 +8,6 @@ target 'UrlSessionPlaying' do
   # Pods for UrlSessionPlaying
   pod 'RxSwift', '6.2.0'
   #pod 'RxRelay', '6.2.0'
-  #pod 'RxCocoa', '6.2.0'
+  pod 'RxCocoa', '6.2.0'
 
 end

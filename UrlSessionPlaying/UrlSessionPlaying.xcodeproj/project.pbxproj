@@ -15,6 +15,8 @@
 		9244E2FF287C32EA000C539E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9244E2FE287C32EA000C539E /* Assets.xcassets */; };
 		9244E302287C32EA000C539E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9244E300287C32EA000C539E /* LaunchScreen.storyboard */; };
 		9254D6F228831DEE00C625D8 /* WayOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9254D6F128831DEE00C625D8 /* WayOne.swift */; };
+		92DFCC6928845BFC00E8F8E3 /* SomeWayType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92DFCC6828845BFC00E8F8E3 /* SomeWayType.swift */; };
+		92F60C64288362960068DE1F /* WayTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F60C63288362960068DE1F /* WayTwo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		9244E301287C32EA000C539E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9244E303287C32EA000C539E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9254D6F128831DEE00C625D8 /* WayOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WayOne.swift; sourceTree = "<group>"; };
+		92DFCC6828845BFC00E8F8E3 /* SomeWayType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomeWayType.swift; sourceTree = "<group>"; };
+		92F60C63288362960068DE1F /* WayTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WayTwo.swift; sourceTree = "<group>"; };
 		E54105B9073460ED8FBDD8F9 /* Pods-UrlSessionPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrlSessionPlaying.release.xcconfig"; path = "Target Support Files/Pods-UrlSessionPlaying/Pods-UrlSessionPlaying.release.xcconfig"; sourceTree = "<group>"; };
 		EF47569F171C4D3F08960A03 /* Pods_UrlSessionPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UrlSessionPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -81,6 +85,8 @@
 				9244E300287C32EA000C539E /* LaunchScreen.storyboard */,
 				9244E303287C32EA000C539E /* Info.plist */,
 				9254D6F128831DEE00C625D8 /* WayOne.swift */,
+				92F60C63288362960068DE1F /* WayTwo.swift */,
+				92DFCC6828845BFC00E8F8E3 /* SomeWayType.swift */,
 			);
 			path = UrlSessionPlaying;
 			sourceTree = "<group>";
@@ -213,6 +219,8 @@
 				9254D6F228831DEE00C625D8 /* WayOne.swift in Sources */,
 				9244E2F6287C32E8000C539E /* AppDelegate.swift in Sources */,
 				9244E2F8287C32E8000C539E /* SceneDelegate.swift in Sources */,
+				92F60C64288362960068DE1F /* WayTwo.swift in Sources */,
+				92DFCC6928845BFC00E8F8E3 /* SomeWayType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

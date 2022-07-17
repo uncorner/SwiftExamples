@@ -8,16 +8,14 @@
 import Foundation
 import RxSwift
 
-class WayOne {
-    private var disposeBag = DisposeBag()
-    var updateImages: (([UIImage])->Void)?
-    private let urls: [URL]
+class WayOne : SomeWayType {
+    private let disposeBag = DisposeBag()
     
-    init(urls: [URL]) {
-        self.urls = urls
-    }
+    var updateImages: (([UIImage])->Void)?
+    var urls: [URL] = []
     
     func run() {
+        print("WayOne run")
         let session = URLSession(configuration: .default)
         let taskObs1 = getDataTaskObservable(session: session, url: urls[0])
         let taskObs2 = getDataTaskObservable(session: session, url: urls[1])
@@ -38,8 +36,7 @@ class WayOne {
                     }
                 }
                 DispatchQueue.main.async { [weak self] in
-                    guard let self = self else {return}
-                    self.updateImages?(images)
+                    self?.updateImages?(images)
                     print("reload table view")
                 }
                 
