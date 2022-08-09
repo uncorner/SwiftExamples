@@ -8,15 +8,26 @@
 
 import Foundation
 import SwiftUI
+import RxSwift
+import RxRelay
 
 class ListViewModel : ObservableObject {
-    private let textItems: [String] = ["First", "Second", "Alex", "John", "Travolta"]
+    private static let textItems: [String] = ["First", "Second", "Alex", "John", "Travolta"]
         
-    @Published var dataItems = [String]()
+    @Published var data = ScreenData()
     
+    private var disposeBag = DisposeBag()
+    private let rxData: BehaviorRelay<[String]> = BehaviorRelay(value: [])
+    
+    init() {
+        rxData.subscribe { [weak self] value in
+            self?.data.items = value
+        }
+        .disposed(by: disposeBag)
+    }
     
     func fillData() {
-        dataItems = textItems
+        rxData.accept(Self.textItems)
     }
     
 }

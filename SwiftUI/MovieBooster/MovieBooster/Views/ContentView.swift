@@ -13,7 +13,7 @@ struct ContentView: View {
     
     var body: some View {
         List {
-            ForEach(viewModel.dataItems, id: \.self) { str in
+            ForEach(viewModel.data.items, id: \.self) { str in
                 CustomRow(content: str)
             }
         }
