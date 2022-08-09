@@ -23,22 +23,6 @@ struct ContentView: View {
     }
 }
 
-struct CustomRow: View {
-    var content: String
-    
-    var body: some View {
-        HStack {
-            Image(systemName: "person.circle.fill")
-            Text(content)
-            Spacer()
-        }
-        .foregroundColor(content == "John" ? Color.green : Color.primary)
-        //.font(.headline)
-        .padding([.top, .bottom])
-    }
-    
-}
-
 //struct ContentView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        ContentView()
