@@ -17,17 +17,17 @@ class ListViewModel : ObservableObject {
     @Published var data = ScreenData()
     
     private var disposeBag = DisposeBag()
-    private let rxData: BehaviorRelay<[String]> = BehaviorRelay(value: [])
+    private let rxData: BehaviorRelay<ScreenData> = BehaviorRelay(value: ScreenData())
     
     init() {
         rxData.subscribe { [weak self] value in
-            self?.data.items = value
+            self?.data = value
         }
         .disposed(by: disposeBag)
     }
     
     func fillData() {
-        rxData.accept(Self.textItems)
+        rxData.accept(ScreenData(items: Self.textItems))
     }
     
 }
