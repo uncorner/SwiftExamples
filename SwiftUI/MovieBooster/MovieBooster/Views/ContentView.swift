@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject private var viewModel = ListViewModel()
+    //@State var searchQuery = ""
     
     var body: some View {
         List {
@@ -18,6 +19,13 @@ struct ContentView: View {
             }
         }
         .navigationTitle("Names")
+        .searchable(text: $viewModel.searchQuery, placement: .navigationBarDrawer(displayMode: .always))
+        .onSubmit(of: .search, {
+            print("onSubmit: \(viewModel.searchQuery)")
+        })
+        .onChange(of: viewModel.searchQuery, perform: { newValue in
+            print("onChange: \(newValue)")
+        })
         .onAppear(perform: viewModel.fillData)
         
     }

@@ -14,6 +14,8 @@ struct MovieBoosterApp: App {
             NavigationView {
                 ContentView()
             }
+            // fix some warning
+            .navigationViewStyle(.stack)
         }
     }
 }
