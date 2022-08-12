@@ -62,14 +62,10 @@ class ListViewModel : ObservableObject {
     
     func onChangeSearchText(text: String) {
         print(#function + ": \(text)")
-        var copyData = copyScreenData()
+        var copyData = screenData
         copyData.searchText = text
         screenDataSeq.accept(copyData)
         searchTextSeq.accept(text)
-    }
-    
-    private func copyScreenData() -> ScreenData {
-        screenData
     }
     
 }
