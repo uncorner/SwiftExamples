@@ -11,16 +11,18 @@ import RxSwift
 import RxRelay
 
 class ListViewModel : ObservableObject {
-    // todo: move to repository
-    private static let textItems: [String] = ["First", "Second", "Alex", "John", "Travolta", "Tommy"]
-    
     @Published var screenData = ScreenData()
     
+    private let repository: Repository
     private let disposeBag = DisposeBag()
     private let screenDataSeq = BehaviorRelay(value: ScreenData())
     private let searchTextSeq = BehaviorRelay(value: "")
+    private var dataItems = [String]()
     
-    init() {
+    init(repository: Repository) {
+        self.repository = repository
+        setRepositoryBinding()
+        
         screenDataSeq.subscribe { [weak self] value in
             self?.screenData = value
         }
@@ -34,7 +36,7 @@ class ListViewModel : ObservableObject {
             })
             .subscribe(onNext: { [weak self] text in
                 guard let self = self else {return}
-                let items = Self.textItems.filter { value in
+                let items = self.dataItems.filter { value in
                     value.caseInsensitiveHasPrefix(text)
                 }
                 self.screenData.items = items
@@ -43,8 +45,19 @@ class ListViewModel : ObservableObject {
         
     }
     
+    private func setRepositoryBinding() {
+        self.repository.getListData().subscribe { [weak self] data in
+            self?.dataItems = data
+        } onFailure: { error in
+            print(error.localizedDescription)
+        } onDisposed: {
+            print("onDisposed")
+        }
+        .disposed(by: disposeBag)
+    }
+    
     func onAppear() {
-        screenDataSeq.accept(ScreenData(items: Self.textItems))
+        screenDataSeq.accept(ScreenData(items: self.dataItems))
     }
     
     func onChangeSearchText(text: String) {
