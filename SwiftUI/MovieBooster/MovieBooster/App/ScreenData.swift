@@ -10,5 +10,6 @@ import Foundation
 struct ScreenData {
     
     var items = [String]()
+    var searchText = ""
     
 }

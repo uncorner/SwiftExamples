@@ -12,23 +12,51 @@ import RxRelay
 
 class ListViewModel : ObservableObject {
     // todo: move to repository
-    private static let textItems: [String] = ["First", "Second", "Alex", "John", "Travolta"]
+    private static let textItems: [String] = ["First", "Second", "Alex", "John", "Travolta", "Tommy"]
     
-    @Published var data = ScreenData()
-    @Published var searchQuery = ""
+    @Published var screenData = ScreenData()
     
-    private var disposeBag = DisposeBag()
-    private let rxData: BehaviorRelay<ScreenData> = BehaviorRelay(value: ScreenData())
+    private let disposeBag = DisposeBag()
+    private let screenDataSeq = BehaviorRelay(value: ScreenData())
+    private let searchTextSeq = BehaviorRelay(value: "")
     
     init() {
-        rxData.subscribe { [weak self] value in
-            self?.data = value
+        screenDataSeq.subscribe { [weak self] value in
+            self?.screenData = value
         }
         .disposed(by: disposeBag)
+        
+        searchTextSeq
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .map({ queryText in
+                queryText.trimming()
+            })
+            .subscribe(onNext: { [weak self] text in
+                guard let self = self else {return}
+                let items = Self.textItems.filter { value in
+                    value.caseInsensitiveHasPrefix(text)
+                }
+                self.screenData.items = items
+            })
+            .disposed(by: disposeBag)
+        
     }
     
-    func fillData() {
-        rxData.accept(ScreenData(items: Self.textItems))
+    func onAppear() {
+        screenDataSeq.accept(ScreenData(items: Self.textItems))
+    }
+    
+    func onChangeSearchText(text: String) {
+        print(#function + ": \(text)")
+        var copyData = copyScreenData()
+        copyData.searchText = text
+        screenDataSeq.accept(copyData)
+        searchTextSeq.accept(text)
+    }
+    
+    private func copyScreenData() -> ScreenData {
+        screenData
     }
     
 }

@@ -10,23 +10,20 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject private var viewModel = ListViewModel()
-    //@State var searchQuery = ""
     
     var body: some View {
         List {
-            ForEach(viewModel.data.items, id: \.self) { str in
+            ForEach(viewModel.screenData.items, id: \.self) { str in
                 CustomRow(content: str)
             }
         }
         .navigationTitle("Names")
-        .searchable(text: $viewModel.searchQuery, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $viewModel.screenData.searchText, placement: .navigationBarDrawer(displayMode: .always))
         .onSubmit(of: .search, {
-            print("onSubmit: \(viewModel.searchQuery)")
+            print("onSubmit: \(viewModel.screenData.searchText)")
         })
-        .onChange(of: viewModel.searchQuery, perform: { newValue in
-            print("onChange: \(newValue)")
-        })
-        .onAppear(perform: viewModel.fillData)
+        .onChange(of: viewModel.screenData.searchText, perform: viewModel.onChangeSearchText)
+        .onAppear(perform: viewModel.onAppear)
         
     }
 }
