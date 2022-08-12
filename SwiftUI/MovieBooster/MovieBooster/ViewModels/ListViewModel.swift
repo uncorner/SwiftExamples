@@ -17,7 +17,7 @@ class ListViewModel : ObservableObject {
     private let disposeBag = DisposeBag()
     private let screenDataSeq = BehaviorRelay(value: ScreenData())
     private let searchTextSeq = BehaviorRelay(value: "")
-    private var dataItems = [String]()
+    private var allDataItems = [String]()
     
     init(repository: Repository) {
         self.repository = repository
@@ -36,7 +36,7 @@ class ListViewModel : ObservableObject {
             })
             .subscribe(onNext: { [weak self] text in
                 guard let self = self else {return}
-                let items = self.dataItems.filter { value in
+                let items = self.allDataItems.filter { value in
                     value.caseInsensitiveHasPrefix(text)
                 }
                 self.screenData.items = items
@@ -47,7 +47,7 @@ class ListViewModel : ObservableObject {
     
     private func setRepositoryBinding() {
         self.repository.getListData().subscribe { [weak self] data in
-            self?.dataItems = data
+            self?.allDataItems = data
         } onFailure: { error in
             print(error.localizedDescription)
         } onDisposed: {
@@ -57,7 +57,7 @@ class ListViewModel : ObservableObject {
     }
     
     func onAppear() {
-        screenDataSeq.accept(ScreenData(items: self.dataItems))
+        screenDataSeq.accept(ScreenData(items: self.allDataItems))
     }
     
     func onChangeSearchText(text: String) {
